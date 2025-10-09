@@ -93,7 +93,7 @@
 	}
 
 	function handleEditKeydown(event: KeyboardEvent) {
-		if (event.key === 'Enter' && !event.shiftKey) {
+		if (event.key === 'Enter' && !event.shiftKey && event.keyCode !== 229) {
 			event.preventDefault();
 			handleSaveEdit();
 		} else if (event.key === 'Escape') {
