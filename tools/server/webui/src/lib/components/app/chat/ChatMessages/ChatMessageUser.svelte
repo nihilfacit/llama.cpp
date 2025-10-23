@@ -6,6 +6,7 @@
 	import { INPUT_CLASSES } from '$lib/constants/input-classes';
 	import { config } from '$lib/stores/settings.svelte';
 	import ChatMessageActions from './ChatMessageActions.svelte';
+	import autoResizeTextarea from '$lib/utils/autoresize-textarea';
 
 	interface Props {
 		class?: string;
@@ -81,6 +82,10 @@
 			resizeObserver.disconnect();
 		};
 	});
+
+	$effect(() => {
+		if (textareaElement) autoResizeTextarea(textareaElement);
+	});
 </script>
 
 <div
@@ -93,9 +98,12 @@
 			<textarea
 				bind:this={textareaElement}
 				bind:value={editedContent}
-				class="min-h-[60px] w-full resize-none rounded-2xl px-3 py-2 text-sm {INPUT_CLASSES}"
+				class="max-h-[120px] min-h-[60px] w-full resize-none rounded-2xl px-3 py-2 text-sm {INPUT_CLASSES}"
 				onkeydown={onEditKeydown}
-				oninput={(e) => onEditedContentChange(e.currentTarget.value)}
+				oninput={(e) => {
+					onEditedContentChange(e.currentTarget.value);
+					autoResizeTextarea(e.currentTarget);
+				}}
 				placeholder="Edit your message..."
 			></textarea>
 
